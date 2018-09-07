@@ -2,12 +2,15 @@
 package com.payudon.chess.player.impl;
 
 import java.awt.Point;
+import java.util.List;
 
+import com.payudon.chess.gui.ChessPanel;
 import com.payudon.chess.gui.Chessboard;
 import com.payudon.chess.player.Player;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 
 /** 
 * @ClassName: ComputerPlayer 
@@ -26,6 +29,8 @@ public class ComputerPlayer extends Player{
 	public static final int WEIGHT_Lv3 = 3;
 	public static final int WEIGHT_Lv4 = 4;
 	public static final int WEIGHT_Lv5 = 5;
+	@Setter
+	private Point point;
 	/** 
 	 * <p>Title: play</p> 
 	 * <p>Description: </p>  
@@ -59,10 +64,35 @@ public class ComputerPlayer extends Player{
 		}).start();
 	}
 	public Point getPoint() {
-		return new Point(20,20);
+		return this.point;
 	}
 	public boolean hasLv5() {
-		
+		List<Point> chess = getChess();
+		if(chess.size()<4) {
+			return false;
+		}
+		for (Point point : chess) {
+			
+		}
 		return false;
+	}
+	public void checkNearPoint(Point point,Point[] chess) {
+		int x = (int)point.getX();
+		int y = (int)point.getY();
+		int grade = ChessPanel.grade;
+		int x1 = x + grade>580?580:x + grade;
+		int x2 = x - grade<20?20:x + grade;
+		int y1 = y + grade>580?580:x + grade;;
+		int y2 = y - grade<20?20:x + grade;
+		for(int i=0;i<chess.length;i++) {
+			Point p = chess[i];
+			if(p.equals(point)) {
+				continue;
+			}else {
+				if(p.getX()<x1&&p.getX()>x2&&p.getY()<y1&&p.getY()>y2) {
+					
+				}
+			}
+		}
 	}
 }

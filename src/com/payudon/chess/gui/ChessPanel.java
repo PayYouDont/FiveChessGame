@@ -7,6 +7,9 @@ import java.awt.Point;
 
 import javax.swing.JPanel;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 /** 
 * @ClassName: ChessPanel 
 * @Description: TODO(     ) 
@@ -14,6 +17,8 @@ import javax.swing.JPanel;
 * @date 2018年9月6日 下午2:31:04 
 *  
 */
+@Data
+@EqualsAndHashCode(callSuper=false)
 public class ChessPanel extends JPanel{
 
 	/** 
@@ -21,9 +26,12 @@ public class ChessPanel extends JPanel{
 	*/ 
 	private static final long serialVersionUID = 1L;
 	private static String[] letters = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"};
+	public static int grade;
+	public static int width = 620;
+	public static int height = width;
 	public ChessPanel() {
 		setBackground(new Color(208,165,133));
-		setBounds(30,30, 620, 620);
+		setBounds(30,30, width, height);
 	}
 	
 	public void paint(Graphics g) {
@@ -45,7 +53,7 @@ public class ChessPanel extends JPanel{
 	
 	public void paintRowLine(Graphics g) {
 		int width = this.getWidth()-20;
-		int grade = width/15;
+		grade = width/15;
 		for(int i=0;i<15;i++) {
 			int step = grade * i+20;
 			int x1 = 20;
@@ -63,7 +71,6 @@ public class ChessPanel extends JPanel{
 	}
 	public void paintColLine(Graphics g) {
 		int height = this.getHeight()-20;
-		int grade = height/15;
 		for(int i=0;i<15;i++) {
 			int step = grade * i+20;
 			int x1 = step;
