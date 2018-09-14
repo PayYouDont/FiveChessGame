@@ -1,6 +1,9 @@
 
 package com.payudon.chess.player.impl;
 
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+
 import com.payudon.chess.gui.ChessListener;
 import com.payudon.chess.gui.Chessboard;
 import com.payudon.chess.player.Player;
@@ -33,24 +36,22 @@ public class PlayerImpl extends Player{
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while(true) {
-					if(!isPlay()||getListener().isPlay()) {
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
+				Chessboard.chess.addMouseListener(new ChessListener() {
+					@Override
+					 public void mouseClicked(MouseEvent e) {
+						if(isPlay()&&e.getButton()==1) {
+							Point point = Chessboard.chess.getClickPoint(e.getPoint());
+							if(!isExist(point)&&point!=null) {
+								getChess().add(point);
+								Chessboard.chess.paintChess(point,isFirst());
+								setPlay(false);
+								getOpponent().setPlay(true);
+								isWin(point);
+							}
 						}
-					}else {
-						ChessListener listener = getListener();
-						listener.setPlay(isPlay());
-						Chessboard.chess.addMouseListener(listener);
-						setPlay(false);
-						getOpponent().setPlay(true);
-						setChess(getListener().getChess());
 					}
-				}
+				});
 			}
 		}).start();
 	}
-	
 }
