@@ -33,17 +33,20 @@ public class PlayerImpl extends Player{
 	 */
 	@Override
 	public void play() {
+		setBoard(new Chessboard());
+		Chessboard board = getBoard();
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				Chessboard.chess.addMouseListener(new ChessListener() {
+				board.getChess().addMouseListener(new ChessListener() {
 					@Override
 					 public void mouseClicked(MouseEvent e) {
 						if(isPlay()&&e.getButton()==1) {
-							Point point = Chessboard.chess.getClickPoint(e.getPoint());
+							Point point = board.getChess().getClickPoint(e.getPoint());
 							if(!isExist(point)&&point!=null) {
 								getChess().add(point);
-								Chessboard.chess.paintChess(point,isFirst());
+								board.chess.paintChess(point,isFirst());
+								getOpponent().getBoard().getChess().paintChess(point,isFirst());
 								setPlay(false);
 								getOpponent().setPlay(true);
 								isWin(point);

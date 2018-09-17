@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Random;
 
 import com.payudon.chess.gui.ChessPanel;
-import com.payudon.chess.gui.Chessboard;
 import com.payudon.chess.player.Player;
 import com.payudon.chess.util.ChessUtil;
 
@@ -64,7 +63,7 @@ public class ComputerPlayer extends Player{
 						next();
 						Point point = getPoint();
 						getChess().add(point);
-						Chessboard.chess.paintChess(point,isFirst());
+						getOpponent().getBoard().getChess().paintChess(point,isFirst());
 						setPlay(false);
 						getOpponent().setPlay(true);
 					}

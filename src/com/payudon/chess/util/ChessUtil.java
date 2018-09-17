@@ -16,16 +16,16 @@ import com.payudon.chess.player.Player;
 */
 public class ChessUtil {
 	
-	public static boolean checkWin(Point point,Player player,int direction) {
+	public static boolean checkWin(Point point,Player player) {
 		List<Point> points = player.getChess();
 		int x = (int)point.getX();
 		int y = (int)point.getY();
 		int grade = ChessPanel.grade;
-		int sum = 0;
-		switch (direction) {
+		int sum = 1;
+		switch (0) {
 		case 0://←→方向
 			for(int i=0;i<5;i++) {
-				sum = 0;
+				sum = 1;
 				for (int j = 1; j <5;j++) {
 					int x1;
 					if(j>i) {
@@ -45,10 +45,9 @@ public class ChessUtil {
 					return true;
 				}
 			}
-			break;
 		case 1://↑↓方向
 			for(int i=0;i<5;i++) {
-				sum = 0;
+				sum = 1;
 				for (int j = 1; j <5;j++) {
 					int y1;
 					if(j>i) {
@@ -68,10 +67,9 @@ public class ChessUtil {
 					return true;
 				}
 			}
-			break;
 		case 2://↖↘方向
 			for(int i=0;i<5;i++) {
-				sum = 0;
+				sum = 1;
 				for (int j = 1; j <5;j++) {
 					int x1,y1;
 					if(j>i) {
@@ -93,10 +91,9 @@ public class ChessUtil {
 					return true;
 				}
 			}
-			break;
 		case 3://↗↙方向
 			for(int i=0;i<5;i++) {
-				sum = 0;
+				sum = 1;
 				for (int j = 1; j <5;j++) {
 					int x1,y1;
 					if(j>i) {

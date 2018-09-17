@@ -5,6 +5,9 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
+import com.payudon.chess.gui.Chessboard;
 import com.payudon.chess.util.ChessUtil;
 
 import lombok.Data;
@@ -21,9 +24,11 @@ public abstract class Player {
 	private Integer id;
 	private Integer score;
 	private boolean isPlay;
-	private boolean isFirst; 
+	private boolean isFirst;
 	private List<Point> chess = new ArrayList<>();
 	private Player opponent;//对手
+	private boolean isWin;
+	private Chessboard board;
 	public abstract void play();
 	public boolean isExist(Point point) {
 		if(ChessUtil.isExist(point,getChess())) {
@@ -35,17 +40,8 @@ public abstract class Player {
 		return false;
 	}
 	public boolean isWin(Point point) {
-		if(ChessUtil.checkWin(point, this,0)) {
-			System.out.println(this+"win");
-			return true;
-		}
-		if(ChessUtil.checkWin(point, this,1)) {
-			return true;
-		}
-		if(ChessUtil.checkWin(point, this,2)) {
-			return true;
-		}
-		if(ChessUtil.checkWin(point, this,3)) {
+		if(ChessUtil.checkWin(point, this)) {
+			JOptionPane.showMessageDialog(null,"you win");
 			return true;
 		}
 		return false;

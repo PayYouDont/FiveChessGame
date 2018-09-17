@@ -3,7 +3,9 @@ package com.payudon.chess.gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 
 import javax.swing.JPanel;
 
@@ -43,14 +45,15 @@ public class ChessPanel extends JPanel{
 	
 	public void paintChess(Point point,boolean isFirst) {
 		Chess chess = new Chess();
-		Graphics g = this.getGraphics();
+		Graphics2D g = (Graphics2D) this.getGraphics();
+		//抗锯齿
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 		if(isFirst) {
 			chess.paint(g, point,Color.black);
 		}else {
 			chess.paint(g, point,Color.white);
 		}
 	}
-	
 	public void paintRowLine(Graphics g) {
 		int width = this.getWidth()-20;
 		grade = width/15;
