@@ -24,12 +24,12 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class Read extends Thread {
+public class Reader extends Thread{
 	private Socket socket;
 	private BufferedReader bufferedReader;
 	private String str = null;
 
-	public Read(Socket socket) throws IOException {
+	public Reader(Socket socket) throws IOException {
         this.socket = socket;
         this.bufferedReader = new BufferedReader(new InputStreamReader(socket
                 .getInputStream()));

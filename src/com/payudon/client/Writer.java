@@ -22,19 +22,17 @@ import lombok.EqualsAndHashCode;
 */
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class Writer extends Thread{
+public class Writer{
     private Socket socket;
     private PrintWriter printWriter;
     private String str = null;
- 
     public Writer(Socket socket) throws IOException {
         this.socket = socket;
         this.printWriter = new PrintWriter(socket.getOutputStream());
  
     }
-    @Override
-    public void run() {
-    	 printWriter.write(str + "\r\n");
-         printWriter.flush();
+    public void write(String msg) {
+    	printWriter.write(msg + "\r\n");
+        printWriter.flush();
     }
 }

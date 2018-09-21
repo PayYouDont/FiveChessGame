@@ -1,4 +1,4 @@
-package com.payudon.chess.util;
+package com.payudon.util;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -2,13 +2,13 @@
 package com.payudon.chess.player;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
+import com.alibaba.fastjson.annotation.JSONField;
+import com.payudon.chess.Application;
 import com.payudon.chess.gui.Chessboard;
-import com.payudon.chess.util.ChessUtil;
 
 import lombok.Data;
 
@@ -20,30 +20,23 @@ import lombok.Data;
 *  
 */
 @Data
-public abstract class Player {
+public abstract class Player implements Serializable{
+	/** 
+	* @Fields serialVersionUID : TODO(     ) 
+	*/ 
+	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private Integer score;
 	private boolean isPlay;
 	private boolean isFirst;
+	@JSONField(serialize=false)
 	private List<Point> chess = new ArrayList<>();
-	private Player opponent;//对手
-	private boolean isWin;
-	private Chessboard board;
-	public abstract void play();
-	public boolean isExist(Point point) {
-		if(ChessUtil.isExist(point,getChess())) {
-			return true;
+	private Point point;
+	public abstract void play(Chessboard board);
+	public boolean isWin() {
+		if(point==null) {
+			return false;
 		}
-		if(ChessUtil.isExist(point,getOpponent().getChess())) {
-			return true;
-		}
-		return false;
-	}
-	public boolean isWin(Point point) {
-		if(ChessUtil.checkWin(point, this)) {
-			JOptionPane.showMessageDialog(null,"you win");
-			return true;
-		}
-		return false;
+		return Application.GAME.isWin(this);
 	}
 }

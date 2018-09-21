@@ -8,9 +8,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
+import com.payudon.chess.Application;
 import com.payudon.chess.gui.ChessPanel;
+import com.payudon.chess.gui.Chessboard;
 import com.payudon.chess.player.Player;
-import com.payudon.chess.util.ChessUtil;
+import com.payudon.util.ChessUtil;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,7 +28,11 @@ import lombok.Setter;
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class ComputerPlayer extends Player{
-
+	/** 
+	* @Fields serialVersionUID : TODO(     ) 
+	*/ 
+	private static final long serialVersionUID = 1L;
+	private Player opponent;//对手
 	private int weight;//权重
 	public static final int WEIGHT_Lv1 = 1;
 	public static final int WEIGHT_Lv2 = 2;
@@ -37,6 +43,8 @@ public class ComputerPlayer extends Player{
 	public static final Integer vertical = 1;//竖方向（|）
 	public static final Integer left_falling = 2;//撇方向（/）
 	public static final Integer right_falling = 3;//捺方向（\）
+	private Thread thread;
+	public volatile boolean isRun = true;
 	@Setter
 	private Point point;
 	/** 
@@ -48,29 +56,35 @@ public class ComputerPlayer extends Player{
 	 * @date 2018年9月7日 下午2:44:07
 	 */
 	@Override
-	public void play() {
-		new Thread(new Runnable() {
+	public void play(Chessboard board) {
+		opponent = Application.GAME.getPlayer();
+		thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while(true) {
+				while(isRun()) {
 					if(!isPlay()) {
 						try {
 							Thread.sleep(1000);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-					}else {
+					}else if(!opponent.isWin()){
 						next();
 						Point point = getPoint();
 						getChess().add(point);
-						getOpponent().getBoard().getChess().paintChess(point,isFirst());
+						board.getChess().paintChess(point,isFirst());
 						setPlay(false);
-						getOpponent().setPlay(true);
+						isWin();
+						opponent.setPlay(true);
 					}
 					
 				}
 			}
-		}).start();
+		});
+		thread.start();
+	}
+	public void dispose() {
+		setRun(false);
 	}
 	public void next() {
 		if(hasNext(WEIGHT_Lv5)) {
@@ -104,7 +118,7 @@ public class ComputerPlayer extends Player{
 				point = new Point(ChessPanel.grade*i1+20,ChessPanel.grade*i2+20);
 				i1 = r.nextInt(15);
 				i2 = r.nextInt(15);
-			} while (isExist(point)||!checkSpace(point,horizontal));
+			} while (Application.GAME.isExist(point)||!checkSpace(point,horizontal));
 			setPoint(point);
 			return true;
 		}
@@ -168,7 +182,7 @@ public class ComputerPlayer extends Player{
 				for(int j=1;j<getWeight()-1;j++) {
 					int x1 = x +  grade*i;
 					Point p = new Point(x1,y);
-					if(!isExist(p)) {
+					if(!Application.GAME.isExist(p)) {
 						setPoint(p);
 						return true;
 					}

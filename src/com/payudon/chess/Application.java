@@ -3,8 +3,7 @@ package com.payudon.chess;
 
 import javax.swing.JOptionPane;
 
-import com.payudon.chess.gui.Game;
-import com.payudon.chess.player.impl.PlayerImpl;
+import com.payudon.chess.game.Game;
 
 /** 
 * @ClassName: Start 
@@ -14,14 +13,23 @@ import com.payudon.chess.player.impl.PlayerImpl;
 *  
 */
 public class Application {
+	public static Game GAME;
 	public static void main(String[] args) {
-		Object[] options = { " 人机对战 ", " 联机对战 " };
-		int response = JOptionPane.showOptionDialog(null, "请选择对战方式", " 选择菜单 ",
-				JOptionPane.YES_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-		if (response == 0) {
-			new Game(new PlayerImpl()).start();
-		} else if (response == 1) {
-			new Game(new PlayerImpl(),new PlayerImpl()).start();
+		start();
+	}
+	public static void start() {
+		if(GAME!=null) {
+			GAME.dispose();
 		}
+		GAME = new Game();
+		Object[] options = { " 人机对战 ", " 联机对战 " };
+		int mode = JOptionPane.showOptionDialog(null, "请选择对战方式", " 选择菜单 ",
+				JOptionPane.YES_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+		if(mode==-1) {
+			GAME.dispose();
+			return;
+		}
+		GAME.setMode(mode);
+		GAME.start();
 	}
 }

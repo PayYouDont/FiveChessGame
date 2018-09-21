@@ -1,5 +1,5 @@
 
-package com.payudon.chess.util;
+package com.payudon.util;
 
 import java.awt.Point;
 import java.util.List;

@@ -1,8 +1,9 @@
 
 package com.payudon.client;
 
-import java.io.IOException;
-import java.net.Socket;
+import com.payudon.chess.game.Gamer;
+import com.payudon.chess.player.Player;
+import com.payudon.util.JsonUtil;
 
 /** 
 * @ClassName: GameClient 
@@ -12,22 +13,11 @@ import java.net.Socket;
 *  
 */
 public class GameClient {
-	public static Object obj = new Object();
-    // 与服务器连通地址本机（127.0.0.1），局域网中其他机器是（服务器在局域网中的ip地址） 端口都是8888
-    public static void start() throws IOException {
-        Socket socket = new Socket("127.0.0.1", 9999);
-        if (socket.isConnected()) {
-            // 如果连接成功了就开启写和读的进程
-            new Writer(socket).start();
-            new Read(socket).start();
-        } else {
-            System.out.println("服务器未开启");
-        }
+    public static Gamer matchPlayer(Player player) {
+		String jsonstr = JsonUtil.toJson(player);
+		String gamerJson = NettyClient.send(jsonstr).toString();
+		Gamer gamer = JsonUtil.parseObject(gamerJson, Gamer.class);
+		return gamer;
+		
     }
-    public static void main(String[] args) {
-    	try {
-			GameClient.start();
-		} catch (IOException e) {
-		}
-	}
 }
